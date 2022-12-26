@@ -11,4 +11,9 @@ class Datacust extends Model
     protected $table = 'datacusts';
     protected $fillable = ['status', 'timseo', 'timclosing','web','klien','notelp','harga','bayar','tanggal','tanggal_offseo','keterangan'];
     public $timestamps = true;
+
+    public function user()
+    {
+       return $this->belongsTo(User::class, 'id');
+    }
 }

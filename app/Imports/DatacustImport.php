@@ -22,12 +22,11 @@ class DatacustImport implements ToModel
             'web' => $row[6],
             'klien' => $row[7],
             'notelp' => $row[8],
-            'dp' => $row[9],
-            'harga' => $row[10],
-            'bayar' => $row[11],
-            'tanggal' => $row[12],
-            'tanggal_offseo' => $row[13],
-            'keterangan' => $row[14],
+            'harga' => $row[9],
+            'bayar' => $row[10],
+            'tanggal' => $row[11],
+            'tanggal_offseo' => $row[12],
+            'keterangan' => $row[13]
         ]);
     }
 }

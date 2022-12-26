@@ -5,7 +5,7 @@
   <h3 class="page-title"> DATA PELANGGAN </h3>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="#">Administrator</a></li>
+      <li class="breadcrumb-item"><a href="#">SEO</a></li>
       <li class="breadcrumb-item active" aria-current="page">Data Pelanggan</li>
     </ol>
   </nav>
@@ -44,7 +44,6 @@
                 <th> NAMA WEB </th>
                 <th> NAMA KLIEN </th>
                 <th> NO. TELP </th>
-                <th> DP </th>
                 <th> HARGA </th>
                 <th> PEMBAYARAN </th>
                 <th> TANGGAL TRANSAKSI </th>
@@ -149,7 +148,8 @@
         }
       });
       var table = $('#datacust-table').DataTable({
-        pageLength: '500',
+        pageLength: '200',
+        order: [[9, 'desc']],
         processing: true,
         serverSide: true,
         ajax: {
@@ -185,11 +185,6 @@
           {
             data: 'notelp',
             name: 'notelp'
-          },
-          {
-            data: 'dp',
-            render: $.fn.dataTable.render.number('.', ',', 0, 'Rp '),
-            name: 'dp'
           },
           {
             data: 'harga',

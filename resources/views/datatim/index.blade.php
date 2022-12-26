@@ -65,7 +65,7 @@
                       </div>
                       <div class="form-group">
                         <label for="role_id">Role</label>
-                        <select class="form-control" id="role_id" name="role_id" required="">
+                        <select class="rowser-default custom-select" id="role_id" name="role_id" required="">
                           <option value=""> -- Select Role --</option>
                           @foreach ($roles as $role)
                           <option name="role_id" value="{{ $role->id }}">{{ $role->roles_name }}</option>
@@ -219,6 +219,7 @@
         $('#edit_users_kode').val(res.users_kode);
         $("#edit_users_kode").attr("readonly", true);
         $('#edit_nama').val(res.nama);
+        $("#edit_nama").attr("readonly", true);
         $('#edit_username').val(res.username);
         $("#edit_username").attr("readonly", true);
         $('#edit_password').val(res.password);

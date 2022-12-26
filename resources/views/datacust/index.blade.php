@@ -14,7 +14,7 @@
           <div class="form-group">
             @csrf
             <label for="export_status">Filter berdasarkan <b>STATUS & BULAN</b> Transaksi</label>
-            <select class="form-control" id="export_status" name="export_status" required>
+            <select class="rowser-default custom-select" id="export_status" name="export_status" required>
               <option value=""> -- PILIH STATUS --</option>
               <option value="AKTIF">AKTIF</option>
               <option value="GARANSI">GARANSI</option>
@@ -155,13 +155,13 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-6 col-md-12">
               <div class="form-group">
                 <label for="edit_harga">HARGA LAYANAN</label>
                 <input type="text" class="form-control" name="edit_harga" id="edit_harga" placeholder="Masukan harga layanan" required />
               </div>
             </div>
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-6 col-md-12">
               <div class="form-group">
                 <label for="edit_bayar">PEMBAYARAN</label>
                 <input type="text" class="form-control" name="edit_bayar" id="edit_bayar" placeholder="Jumlah pembayaran yang sudah dilakukan" required />
@@ -187,16 +187,10 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-12 col-md-12">
               <div class="form-group">
                 <label for="keterangan">KETERANGAN</label>
-                <input type="text" class="form-control" name="edit_keterangan" id="edit_keterangan" placeholder="Masukan nama klien" required />
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-12">
-              <div class="form-group">
-                <label for="bukti">BUKTI TRANSAKSI</label>
-                <input type="text" class="form-control" name="edit_bukti" id="edit_bukti" readonly />
+                <input type="text" class="form-control" name="edit_keterangan" id="edit_keterangan" placeholder="Masukan nama klien"/>
               </div>
             </div>
           </div>
@@ -218,7 +212,6 @@
     </ol>
   </nav>
 </div>
-<marquee behavior="" direction="">Setelah menonaktifkan SEO - Jangan lupa edit tanggal OFF SEO di tombol EDIT ya :)</marquee>
 <div class="row">
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
@@ -461,7 +454,8 @@
           $(api.column(10).footer()).html(formatAsPercent(rasio));
         },
 
-        pageLength: '500',
+        pageLength: '200',
+        order: [[11, 'desc']],
         processing: true,
         serverSide: true,
         ajax: {

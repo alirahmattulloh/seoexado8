@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Datacust;
 use App\Models\Role;
 use App\Models\User;
@@ -46,15 +47,19 @@ class DatacustController extends Controller
     {
         if (request()->ajax()) {
             if (!empty($request->filter_tanggal)) {
+                $userlogin = auth()->user()->nama;
                 $datacust = DB::table('datacusts')
                     ->select('datacusts.*')
                     ->where('status', '=', "AKTIF")
+                    ->where('timseo', '=', $userlogin)
                     ->where('tanggal', 'like', "%" . $request->filter_tanggal . "%")
                     ->get();
             } else {
+                $userlogin = auth()->user()->nama;
                 $datacust = DB::table('datacusts')
                     ->select('datacusts.*')
                     ->where('status', '=', "AKTIF")
+                    ->where('timseo', '=', $userlogin)
                     ->get();
             }
             return datatables()->of($datacust)
@@ -64,6 +69,12 @@ class DatacustController extends Controller
         $datacust = Datacust::all();
 
         return view('datacust.indexTimseo', ['datacust' => $datacust]);
+    }
+
+    public function datacustseo()
+    {
+        $datacustseo = Datacust::with('user')->get();
+        return view('datacust.indexTimseo', ['Datacusts' => $datacustseo]);
     }
 
     public function export(Request $request)
@@ -82,14 +93,8 @@ class DatacustController extends Controller
         // menangkap file excel
         $file = $request->file('file');
 
-        // membuat nama file unik
-        $nama_file = rand() . $file->getClientOriginalName();
-
-        // upload ke folder file_siswa di dalam folder public
-        $file->move('datacust', $nama_file);
-
         // import data
-        Excel::import(new DatacustImport, public_path('/datacust/' . $nama_file));
+        Excel::import(new DatacustImport, $file);
 
         // alihkan halaman kembali
         return redirect('/admin/datacust')->with('success', 'Data pelanggan berhasil di IMPORT');
@@ -117,10 +122,10 @@ class DatacustController extends Controller
             'harga' => 'required|int',
             'bayar' => 'required|int',
             'tanggal' => 'required',
-            'keterangan' => 'required'
+            'keterangan' => 'nullable'
         ]);
 
-        if ($request->bayar === $request->harga) {
+        if ($request->bayar === $request->harga && $request->keterangan === null) {
             $lunas = "LUNAS";
             $onseo = "AKTIF";
             $datacust = Datacust::updateOrCreate(
@@ -138,6 +143,25 @@ class DatacustController extends Controller
                     'bayar' => $request->bayar,
                     'tanggal' => $request->tanggal,
                     'keterangan' => $lunas,
+                ]
+            );
+        } elseif ($request->bayar === $request->harga) {
+            $onseo = "AKTIF";
+            $datacust = Datacust::updateOrCreate(
+                [
+                    'id' => $datacustId
+                ],
+                [
+                    'status' => $onseo,
+                    'timseo' => $request->timseo,
+                    'timclosing' => $request->timclosing,
+                    'web' => $request->web,
+                    'klien' => $request->klien,
+                    'notelp' => $request->notelp,
+                    'harga' => $request->harga,
+                    'bayar' => $request->bayar,
+                    'tanggal' => $request->tanggal,
+                    'keterangan' => $request->keterangan,
                 ]
             );
         } elseif ($request->bayar === '0') {
@@ -193,15 +217,35 @@ class DatacustController extends Controller
             'edit_timclosing' => 'required',
             'edit_web' => 'required',
             'edit_klien' => 'required',
-            'edit_notelp' => 'required|int',
+            'edit_notelp' => 'required',
             'edit_harga' => 'required|int',
             'edit_bayar' => 'required|int',
             'edit_tanggal' => 'required',
             'edit_tanggal_offseo',
-            'edit_keterangan' => 'required'
+            'edit_keterangan' => 'nullable'
         ]);
 
-        if ($request->edit_bayar === $request->edit_harga) {
+        if ($request->edit_bayar === $request->edit_harga && $request->keterangan === null) {
+            $onstatus = "AKTIF";
+            $datacust = Datacust::updateOrCreate(
+                [
+                    'id' => $datacustId
+                ],
+                [
+                    'status' => $onstatus,
+                    'timseo' => $request->edit_timseo,
+                    'timclosing' => $request->edit_timclosing,
+                    'web' => $request->edit_web,
+                    'klien' => $request->edit_klien,
+                    'notelp' => $request->edit_notelp,
+                    'harga' => $request->edit_harga,
+                    'bayar' => $request->edit_bayar,
+                    'tanggal' => $request->edit_tanggal,
+                    'tanggal_offseo' => $request->edit_tanggal_offseo,
+                    'keterangan' => $request->edit_keterangan,
+                ]
+            );
+        } elseif ($request->edit_bayar === $request->edit_harga) {
             $lunas = "LUNAS";
             $onstatus = "AKTIF";
             $datacust = Datacust::updateOrCreate(

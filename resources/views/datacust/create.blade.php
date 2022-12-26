@@ -49,7 +49,7 @@
             <div class="col-lg-4 col-md-12">
               <div class="form-group">
                 <label for="status">STATUS</label>
-                <select class="form-control" id="status" name="status" required>
+                <select class="rowser-default custom-select" id="status" name="status" required>
                   <option value=""> -- PILIH STATUS --</option>
                   <option value="AKTIF">AKTIF</option>
                   <option value="GARANSI">GARANSI</option>
@@ -60,10 +60,10 @@
             <div class="col-lg-4 col-md-12">
               <div class="form-group">
                 <label for="timseo">TIM SEO</label>
-                <select class="form-control" id="timseo" name="timseo" required>
+                <select class="rowser-default custom-select" id="timseo" name="timseo" required>
                   <option value=""> -- PILIH TIM SEO --</option>
                   @foreach ($timseos as $timseo)
-                  <option value="{{ $timseo->username }}">{{ $timseo->username }}</option>
+                  <option value="{{ $timseo->nama }}">{{ $timseo->nama }}</option>
                   @endforeach
                 </select>
               </div>
@@ -71,12 +71,7 @@
             <div class="col-lg-4 col-md-12">
               <div class="form-group">
                 <label for="timclosing">TIM CLOSING</label>
-                <select class="form-control" id="timclosing" name="timclosing" required>
-                  <option value=""> -- PILIH TIM CLOSING --</option>
-                  @foreach ($timclosings as $timclosing)
-                  <option value="{{ $timclosing->username }}">{{ $timclosing->username }}</option>
-                  @endforeach
-                </select>
+                <input type="text" class="form-control" id="timclosing" name="timclosing" placeholder="Masukan nama tim closing" required />
               </div>
             </div>
           </div>
@@ -102,14 +97,14 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-6 col-md-12">
               <div class="form-group">
                 <label for="harga">HARGA LAYANAN</label>
                 <input type="text" class="form-control" name="harga" id="harga" placeholder="Masukan harga layanan"
                   required />
               </div>
             </div>
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-6 col-md-12">
               <div class="form-group">
                 <label for="bayar">PEMBAYARAN</label>
                 <input type="text" class="form-control" name="bayar" id="bayar"
@@ -118,7 +113,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-6 col-md-12">
               <div class="form-group">
                 <div class="md-form md-outline input-with-post-icon datepicker">
                   <input placeholder="Select date" type="date" id="tanggal" name="tanggal" class="form-control"
@@ -127,17 +122,11 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-6 col-md-12">
               <div class="form-group">
                 <label for="keterangan">KETERANGAN</label>
                 <input type="text" class="form-control" name="keterangan" id="keterangan"
-                  placeholder="Masukan nama klien" required />
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-12">
-              <div class="form-group">
-                <label for="bukti">BUKTI TRANSAKSI</label>
-                <input type="text" class="form-control" name="bukti" id="bukti" readonly />
+                  placeholder="Masukan nama klien" />
               </div>
             </div>
           </div>
