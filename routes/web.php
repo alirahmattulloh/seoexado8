@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::post('/admin/datacust/storeUpdate', [DatacustController::class, 'storeUpdate'])->name('datacust.storeUpdate');
     Route::post('/admin/datacust/delete', [DatacustController::class, 'destroy'])->name('datacust.destroy');
     Route::post('/admin/datacust/export', [DatacustController::class, 'export'])->name('datacust.export');
+    Route::post('/admin/datacust/import', [DatacustController::class, 'import'])->name('datacust.import');
     //DATA ROLE
     Route::get('/admin/datarole', [DataroleController::class, 'index'])->name('datarole.index');
     Route::post('/admin/datarole/store', [DataroleController::class, 'store'])->name('datarole.store');

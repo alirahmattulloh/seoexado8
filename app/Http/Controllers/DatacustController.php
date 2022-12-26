@@ -11,6 +11,7 @@ use DataTables;
 use Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DatacustExport;
+use App\Imports\DatacustImport;
 use Illuminate\Support\Facades\DB;
 
 class DatacustController extends Controller
@@ -71,6 +72,29 @@ class DatacustController extends Controller
         return Excel::download(new DatacustExport($request->export_status, $request->export_tanggal), $nama_file);
     }
 
+    public function import(Request $request)
+    {
+        // validasi
+        $this->validate($request, [
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        // menangkap file excel
+        $file = $request->file('file');
+
+        // membuat nama file unik
+        $nama_file = rand() . $file->getClientOriginalName();
+
+        // upload ke folder file_siswa di dalam folder public
+        $file->move('datacust', $nama_file);
+
+        // import data
+        Excel::import(new DatacustImport, public_path('/datacust/' . $nama_file));
+
+        // alihkan halaman kembali
+        return redirect('/admin/datacust')->with('success', 'Data pelanggan berhasil di IMPORT');
+    }
+
     public function create()
     {
         $timseos = User::select('*')->where('role_id', '=', 5)->get();
@@ -90,7 +114,6 @@ class DatacustController extends Controller
             'web' => 'required',
             'klien' => 'required',
             'notelp' => 'required',
-            'dp' => 'required|int',
             'harga' => 'required|int',
             'bayar' => 'required|int',
             'tanggal' => 'required',
@@ -111,7 +134,6 @@ class DatacustController extends Controller
                     'web' => $request->web,
                     'klien' => $request->klien,
                     'notelp' => $request->notelp,
-                    'dp' => $request->dp,
                     'harga' => $request->harga,
                     'bayar' => $request->bayar,
                     'tanggal' => $request->tanggal,
@@ -132,7 +154,6 @@ class DatacustController extends Controller
                     'web' => $request->web,
                     'klien' => $request->klien,
                     'notelp' => $request->notelp,
-                    'dp' => $request->dp,
                     'harga' => $request->harga,
                     'bayar' => $request->bayar,
                     'tanggal' => $request->tanggal,
@@ -151,7 +172,6 @@ class DatacustController extends Controller
                     'web' => $request->web,
                     'klien' => $request->klien,
                     'notelp' => $request->notelp,
-                    'dp' => $request->dp,
                     'harga' => $request->harga,
                     'bayar' => $request->bayar,
                     'tanggal' => $request->tanggal,
@@ -174,7 +194,6 @@ class DatacustController extends Controller
             'edit_web' => 'required',
             'edit_klien' => 'required',
             'edit_notelp' => 'required|int',
-            'edit_dp' => 'required|int',
             'edit_harga' => 'required|int',
             'edit_bayar' => 'required|int',
             'edit_tanggal' => 'required',
@@ -196,7 +215,6 @@ class DatacustController extends Controller
                     'web' => $request->edit_web,
                     'klien' => $request->edit_klien,
                     'notelp' => $request->edit_notelp,
-                    'dp' => $request->edit_dp,
                     'harga' => $request->edit_harga,
                     'bayar' => $request->edit_bayar,
                     'tanggal' => $request->edit_tanggal,
@@ -218,7 +236,6 @@ class DatacustController extends Controller
                     'web' => $request->edit_web,
                     'klien' => $request->edit_klien,
                     'notelp' => $request->edit_notelp,
-                    'dp' => $request->edit_dp,
                     'harga' => $request->edit_harga,
                     'bayar' => $request->edit_bayar,
                     'tanggal' => $request->edit_tanggal,
@@ -238,7 +255,6 @@ class DatacustController extends Controller
                     'web' => $request->edit_web,
                     'klien' => $request->edit_klien,
                     'notelp' => $request->edit_notelp,
-                    'dp' => $request->edit_dp,
                     'harga' => $request->edit_harga,
                     'bayar' => $request->edit_bayar,
                     'tanggal' => $request->edit_tanggal,

@@ -9,6 +9,6 @@ class Datacust extends Model
 {
     use HasFactory;
     protected $table = 'datacusts';
-    protected $fillable = ['status', 'timseo', 'timclosing','web','klien','notelp','dp','harga','bayar','tanggal','tanggal_offseo','keterangan'];
+    protected $fillable = ['status', 'timseo', 'timclosing','web','klien','notelp','harga','bayar','tanggal','tanggal_offseo','keterangan'];
     public $timestamps = true;
 }

@@ -35,6 +35,33 @@
   </div>
 </div>
 
+<!-- Modal IMPORT EXCEL -->
+<div class="modal fade" id="modal_import" tabindex="-1" role="dialog" aria-labelledby="title_import" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="title_import"></h5>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{!! route('datacust.import') !!}" id="importForm" name="importForm" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            {{ csrf_field() }}
+
+            <label>Pilih file excel</label>
+            <div class="form-group">
+              <input type="file" name="file" required="required">
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-block btn-primary" id="btn-import"></button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- Modal update -->
 <div class="modal fade" id="update_status" tabindex="-1" role="dialog" aria-labelledby="modal_update" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -130,12 +157,6 @@
           <div class="row">
             <div class="col-lg-4 col-md-12">
               <div class="form-group">
-                <label for="edit_dp">DOWN PAYMENT</label>
-                <input type="text" class="form-control" name="edit_dp" id="edit_dp" placeholder="Masukan jumlah DP klien" required />
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-12">
-              <div class="form-group">
                 <label for="edit_harga">HARGA LAYANAN</label>
                 <input type="text" class="form-control" name="edit_harga" id="edit_harga" placeholder="Masukan harga layanan" required />
               </div>
@@ -203,7 +224,23 @@
     <div class="card">
       <div class="card-body">
         <div class="row">
-          <div class="col-lg-9 col-md-6 col-sm-9">
+          <div class="col-lg-8 col-md-6 col-sm-9">
+            @if ($errors->any())
+            <div class="alert alert-danger">
+              <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
+
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ session('success') }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
             <div class="col-5">
               <div class="form-group">
                 <label><strong>Filter berdasarkan BULAN : </strong></label>
@@ -221,7 +258,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-6 col-sm-2">
+          <div class="col-lg-4 col-md-6 col-sm-2">
             <!-- Button trigger modal 
             <a href="javascript:void(0);">
               <button type="button" name="filter" id="filter" class="btn btn-info btn-md">
@@ -243,6 +280,11 @@
                 Export
               </button>
             </a>
+            <a onClick="mimport()" href="javascript:void(0);">
+              <button type="button" class="btn btn-secondary btn-md">
+                import
+              </button>
+            </a>
           </div>
         </div>
         <div class="table-responsive text-nowrap">
@@ -258,7 +300,6 @@
                 <th> NAMA WEB </th>
                 <th> NAMA KLIEN </th>
                 <th> NO. TELP </th>
-                <th> DP </th>
                 <th> HARGA </th>
                 <th> PEMBAYARAN </th>
                 <th> TANGGAL TRANSAKSI </th>
@@ -268,17 +309,17 @@
             </thead>
             <tfoot>
               <tr>
-                <td> <b>TOTAL</b> </td>
-                <td> <b>WEB SEO</b> </td>
-                <td id="webseo"></td>
-                <td> <b>WEB AKTIF</b> </td>
-                <td id="webaktif"></td>
-                <td> <b>WEB GARANSI</b> </td>
-                <td id="webgaransi"></td>
-                <td> <b>WEB NONAKTIF</b> </td>
-                <td id="webnonaktif"></td>
-                <td> <b>RASIO</b> </td>
-                <td colspan="5"></td>
+                <td> <b>TOTAL</b> </td><!-- 0-->
+                <td> <b>WEB SEO</b> </td> <!-- 1-->
+                <td id="webseo"></td><!-- 2-->
+                <td> <b>WEB AKTIF</b> </td><!-- 3-->
+                <td id="webaktif"></td><!-- 4-->
+                <td> <b>WEB GARANSI</b> </td><!-- 5-->
+                <td id="webgaransi"></td><!-- 6-->
+                <td> <b>WEB NONAKTIF</b> </td><!-- 7-->
+                <td id="webnonaktif"></td><!--8 -->
+                <td> <b>RASIO</b> </td><!-- 9-->
+                <td colspan="4"></td><!-- 10-->
               </tr>
             </tfoot>
           </table>
@@ -377,7 +418,7 @@
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
-      var table = $('#datacust-table').DataTable({        
+      var table = $('#datacust-table').DataTable({
         "footerCallback": function(row, data, start, end, display) {
           var api = this.api(),
             data;
@@ -468,15 +509,13 @@
             name: 'notelp'
           },
           {
-            data: 'dp',  render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ),
-            name: 'dp'
-          },
-          {
-            data: 'harga',  render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ),
+            data: 'harga',
+            render: $.fn.dataTable.render.number('.', ',', 0, 'Rp '),
             name: 'harga'
           },
           {
-            data: 'bayar',  render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ),
+            data: 'bayar',
+            render: $.fn.dataTable.render.number('.', ',', 0, 'Rp '),
             name: 'bayar'
           },
           {
@@ -521,7 +560,6 @@
         $('#edit_web').val(res.web);
         $('#edit_klien').val(res.klien);
         $('#edit_notelp').val(res.notelp);
-        $('#edit_dp').val(res.dp);
         $('#edit_harga').val(res.harga);
         $('#edit_bayar').val(res.bayar);
         $('#edit_tanggal').val(res.tanggal);
@@ -621,6 +659,13 @@
     $('#title_filter').html("Filter Export Excel");
     $("#btn-export").html('EXPORT NOW!');
     $('#modal_filter').modal('show');
+  }
+
+  function mimport() {
+    $('#importForm').trigger("reset");
+    $('#title_import').html("Import Excel");
+    $("#btn-import").html('IMPORT NOW!');
+    $('#modal_import').modal('show');
   }
 </script>
 @endpush

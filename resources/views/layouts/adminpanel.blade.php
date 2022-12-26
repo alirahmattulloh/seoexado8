@@ -128,8 +128,8 @@
           <div class="collapse" id="datacust">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item"> <a class="nav-link" href="{{ ('/admin/datacust') }}">SEO</a></li>
-              <li class="nav-item"> <a class="nav-link" href="#">Website</a></li>
-              <li class="nav-item"> <a class="nav-link" href="#">Program</a></li>
+              <!--<li class="nav-item"> <a class="nav-link" href="#">Website</a></li>-->
+              <!--<li class="nav-item"> <a class="nav-link" href="#">Program</a></li>-->
             </ul>
           </div>
         </li>
@@ -142,7 +142,7 @@
           <div class="collapse" id="datatim">
             <ul class="nav flex-column sub-menu">
               <li class="nav-item"> <a class="nav-link" href="{{ ('/admin/datatim') }}">List User</a></li>
-              <li class="nav-item"> <a class="nav-link" href="{{ ('/admin/datarole') }}">List Role</a></li>
+              <!--<li class="nav-item"> <a class="nav-link" href="{{ ('/admin/datarole') }}">List Role</a></li>-->
             </ul>
           </div>
         </li>

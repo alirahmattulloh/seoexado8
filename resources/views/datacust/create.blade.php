@@ -104,13 +104,6 @@
           <div class="row">
             <div class="col-lg-4 col-md-12">
               <div class="form-group">
-                <label for="dp">DOWN PAYMENT</label>
-                <input type="text" class="form-control" name="dp" id="dp" placeholder="Masukan jumlah DP klien"
-                  required />
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-12">
-              <div class="form-group">
                 <label for="harga">HARGA LAYANAN</label>
                 <input type="text" class="form-control" name="harga" id="harga" placeholder="Masukan harga layanan"
                   required />
